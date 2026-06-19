@@ -1,5 +1,6 @@
 import apiClient from "@/lib/axios";
 import { API_ENDPOINTS } from "@/lib/constants";
+import { getImageUrl } from "@/lib/utils";
 import { FlutterResponse, Banner } from "@/types";
 import Cookies from "js-cookie";
 
@@ -23,8 +24,8 @@ function normalize(raw: Banner): DisplayBanner {
     id: raw.id,
     title: raw.title,
     description: raw.description || undefined,
-    image: raw.banner_image,
-    thumbnail: raw.image,
+    image: getImageUrl(raw.banner_image),
+    thumbnail: getImageUrl(raw.image),
     discount_amount: raw.discount_amount,
     item_id: raw.item_id,
     button_text: "Shop Now",

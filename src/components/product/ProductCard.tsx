@@ -7,7 +7,7 @@ import { ProductItem } from "@/types";
 import { useCartStore } from "@/store/cartStore";
 import { useWishlistStore } from "@/store/wishlistStore";
 import { useAuthStore } from "@/store/authStore";
-import { cn } from "@/lib/utils";
+import { cn, getImageUrl } from "@/lib/utils";
 import { IMAGES, TEXT } from "@/branding";
 
 interface Props { product: ProductItem; }
@@ -27,7 +27,7 @@ export default function ProductCard({ product }: Props) {
   const salePrice = product.final_price ?? product.price;
   const hasDiscount = salePrice < product.price && product.price > 0;
   const discountPct = hasDiscount ? Math.round(((product.price - salePrice) / product.price) * 100) : null;
-  const thumbnail = imgErr ? IMAGES.placeholder : (product.portrait_img || product.landscape_img || IMAGES.placeholder);
+  const thumbnail = imgErr ? IMAGES.placeholder : getImageUrl(product.portrait_img || product.landscape_img || IMAGES.placeholder);
   const inStock = product.enable_stock === 0 || product.total_stock > 0;
   const isLowStock = inStock && product.enable_stock === 1 && product.total_stock <= 10;
 

@@ -24,3 +24,12 @@ export function getErrorMessage(error: unknown): string {
   if (typeof error === "string") return error;
   return "An unexpected error occurred";
 }
+
+export function getImageUrl(url?: string | null): string {
+  if (!url) return "";
+  if (url.startsWith("http://") || url.startsWith("https://")) return url;
+  const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL?.replace(/\/+$/, "");
+  if (!baseUrl) return url;
+  const normalizedPath = url.startsWith("/") ? url : `/${url}`;
+  return `${baseUrl}${normalizedPath}`;
+}

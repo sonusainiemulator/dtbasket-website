@@ -3,6 +3,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { useCategories } from "@/hooks/useApi";
 import { TEXT, IMAGES } from "@/branding";
+import { getImageUrl } from "@/lib/utils";
 import { Category } from "@/types";
 
 /* ── Single card — large square image + label below, matching screenshot ── */
@@ -14,7 +15,7 @@ function CategoryCard({ category }: { category: Category }) {
       {/* Square image box — light warm bg, rounded corners, subtle shadow */}
       <div className="relative w-full aspect-square rounded-2xl overflow-hidden bg-[#FFF8F0] dark:bg-dm-surface2 border border-gray-100 dark:border-dm-border shadow-sm group-hover:shadow-md group-hover:scale-105 transition-all duration-200">
         <Image
-          src={category.image || IMAGES.placeholder}
+          src={getImageUrl(category.image || IMAGES.placeholder)}
           alt={category.name}
           fill
           className="object-contain p-3"
