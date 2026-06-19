@@ -5,15 +5,18 @@ import { CONFIG } from "@/branding";
 const API_BASE_URL =
   process.env.NEXT_PUBLIC_API_BASE_URL;
 
+console.log("🚀 API_BASE_URL:", API_BASE_URL); // Debug log
+
 export const apiClient = axios.create({
   baseURL: API_BASE_URL,
   timeout: CONFIG.apiTimeout,
   headers: { "Content-Type": "application/json", Accept: "application/json" },
 });
 
-/* ─── Request — attach customer_id to every POST body ───────────────────────── */
+/* ─── Request — log and attach customer_id ────────────────────────────────────────── */
 apiClient.interceptors.request.use(
   (config: InternalAxiosRequestConfig) => {
+    console.log("📤 Request:", config.baseURL + config.url, config.data); // Debug log
     const customerId = Cookies.get("customer_id");
 
     // Inject customer_id into POST body if not already present
@@ -30,10 +33,14 @@ apiClient.interceptors.request.use(
   (error) => Promise.reject(error)
 );
 
-/* ─── Response — handle 401 ──────────────────────────────────────────────────── */
+/* ─── Response — log and handle 401 ──────────────────────────────────────────────── */
 apiClient.interceptors.response.use(
-  (response: AxiosResponse) => response,
+  (response: AxiosResponse) => {
+    console.log("📥 Response:", response.config.url, response.data); // Debug log
+    return response;
+  },
   async (error: AxiosError) => {
+    console.error("❌ Error:", error.config?.url, error.response?.data, error.message); // Debug log
     if (error.response?.status === 401) {
       Cookies.remove("auth_token");
       Cookies.remove("customer_id");
