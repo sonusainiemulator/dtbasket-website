@@ -13,6 +13,7 @@ import {
     ConfirmationResult,
     Auth,
 } from "firebase/auth";
+import { getAnalytics } from "firebase/analytics";
 
 /* ── Module-level state ─────────────────────────────────────────────────────── */
 let _auth: Auth | null = null;
@@ -32,7 +33,13 @@ function getFirebaseAuth(): Auth {
             storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET!,
             messagingSenderId: process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID!,
             appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID!,
+            measurementId: process.env.NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID!,
         });
+
+    // Initialize Analytics if in browser environment
+    if (typeof window !== 'undefined') {
+        getAnalytics(app);
+    }
 
     _auth = getAuth(app);
     _auth.languageCode = "en";
