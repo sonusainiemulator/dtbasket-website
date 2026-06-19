@@ -10,7 +10,7 @@ console.log("🚀 API_BASE_URL:", API_BASE_URL); // Debug log
 export const apiClient = axios.create({
   baseURL: API_BASE_URL,
   timeout: CONFIG.apiTimeout,
-  headers: { "Content-Type": "application/json", Accept: "application/json" },
+  headers: { Accept: "application/json" }, // Removed Content-Type to let axios handle it for FormData
 });
 
 /* ─── Request — log and attach customer_id ────────────────────────────────────────── */
@@ -21,7 +21,13 @@ apiClient.interceptors.request.use(
 
     // Inject customer_id into POST body if not already present
     if (config.method === "post" && customerId) {
-      if (config.data && typeof config.data === "object" && !Array.isArray(config.data)) {
+      if (config.data instanceof FormData) {
+        // If data is FormData, append customer_id if not already present
+        if (!config.data.has("customer_id")) {
+          config.data.append("customer_id", customerId);
+        }
+      } else if (config.data && typeof config.data === "object" && !Array.isArray(config.data)) {
+        // If data is a plain object, add customer_id if not already present
         if (!config.data.customer_id) {
           config.data = { ...config.data, customer_id: customerId };
         }
