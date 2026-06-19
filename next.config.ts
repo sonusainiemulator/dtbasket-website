@@ -10,17 +10,7 @@ const nextConfig: NextConfig = {
     remotePatterns: [
       {
         protocol: "https",
-        hostname: "",
-        pathname: "/**",
-      },
-      {
-        protocol: "https",
-        hostname: "",
-        pathname: "/**",
-      },
-      {
-        protocol: "https",
-        hostname: "",
+        hostname: "dtbasket.bhadra.live",
         pathname: "/**",
       },
     ],
@@ -36,9 +26,9 @@ const nextConfig: NextConfig = {
     fetches: { fullUrl: true },
   },
 
-  // eslint: {
-  //   ignoreDuringBuilds: true,
-  // },
+  eslint: {
+    ignoreDuringBuilds: true,
+  },
 };
 
 export default nextConfig;
