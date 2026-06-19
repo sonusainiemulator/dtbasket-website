@@ -1,21 +1,19 @@
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800;900&family=Poppins:wght@400;500;600;700;800;900&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-/* Google Fonts */
-@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800;900&family=Poppins:wght@400;500;600;700;800;900&display=swap');
-
-/* Base */
 @layer base {
   :root {
-    --font-sans:    'Nunito', system-ui, sans-serif;
+    --font-sans: 'Nunito', system-ui, sans-serif;
     --font-display: 'Poppins', system-ui, sans-serif;
-    --dm-bg:       #0f1a0f;
-    --dm-surface:  #182a18;
+    --dm-bg: #0f1a0f;
+    --dm-surface: #182a18;
     --dm-surface2: #1e321e;
-    --dm-border:   #2d472d;
-    --dm-text:     #e8f5e8;
-    --dm-muted:    #9db89d;
+    --dm-border: #2d472d;
+    --dm-text: #e8f5e8;
+    --dm-muted: #9db89d;
   }
   html { scroll-behavior: smooth; }
   body {
@@ -34,7 +32,6 @@
   img { max-width: 100%; }
 }
 
-/* Components */
 @layer components {
   .btn-primary {
     @apply inline-flex items-center gap-2 bg-primary-700 hover:bg-primary-800 text-white font-bold px-5 py-2.5 rounded-xl transition-all duration-200 hover:shadow-md hover:-translate-y-px disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:translate-y-0 active:scale-95 cursor-pointer;
@@ -99,18 +96,17 @@
     scrollbar-color: #E5E7EB transparent;
   }
   .scrollbar-hide::-webkit-scrollbar {
-  display: none;
-}
-.scrollbar-hide {
-  -ms-overflow-style: none;
-  scrollbar-width: none;
-}
+    display: none;
+  }
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
   .scrollbar-thin::-webkit-scrollbar { width: 4px; height: 4px; }
   .scrollbar-thin::-webkit-scrollbar-track { background: transparent; }
   .scrollbar-thin::-webkit-scrollbar-thumb { background: #E5E7EB; border-radius: 4px; }
 }
 
-/* Animations */
 @layer utilities {
   .animate-fade-in     { animation: fadeIn 0.3s ease-in-out; }
   .animate-slide-up    { animation: slideUp 0.4s ease-out; }
@@ -121,17 +117,15 @@
   .page-enter          { animation: fadeIn 0.4s ease-out; }
 }
 
-@keyframes fadeIn    { from { opacity: 0; }                              to { opacity: 1; } }
+@keyframes fadeIn    { from { opacity: 0; } to { opacity: 1; } }
 @keyframes slideUp   { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
 @keyframes slideDown { from { opacity: 0; transform: translateY(-8px); } to { opacity: 1; transform: translateY(0); } }
-@keyframes bounceIn  { from { opacity: 0; transform: scale(0.9); }       to { opacity: 1; transform: scale(1); } }
-@keyframes slideLeft  { from { opacity: 0; transform: translateX(100%);  } to { opacity: 1; transform: translateX(0); } }
+@keyframes bounceIn  { from { opacity: 0; transform: scale(0.9); } to { opacity: 1; transform: scale(1); } }
+@keyframes slideLeft  { from { opacity: 0; transform: translateX(100%); } to { opacity: 1; transform: translateX(0); } }
 @keyframes slideRight { from { opacity: 0; transform: translateX(-100%); } to { opacity: 1; transform: translateX(0); } }
 
-/* Swiper bullet overrides */
 .swiper-pagination-bullet        { background: #fff !important; opacity: 0.5 !important; }
 .swiper-pagination-bullet-active { opacity: 1 !important; background: #fff !important; transform: scale(1.3); }
 
-/* Prose overrides */
 .prose p, .prose li { color: #4B5563; line-height: 1.75; }
 .prose h2, .prose h3 { color: #1F2937; font-family: var(--font-display); }
