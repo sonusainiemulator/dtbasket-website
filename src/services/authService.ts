@@ -59,17 +59,18 @@ export const authService = {
     countryCode: string = "+91",
     countryName: string = "India"
   ): Promise<FlutterLoginResponse> => {
+    const formData = new FormData();
+    formData.append("type", LOGIN_TYPE.OTP);
+    formData.append("mobile_number", mobileNumber);
+    formData.append("country_code", countryCode);
+    formData.append("country_name", countryName);
+    formData.append("device_name", "web");
+    formData.append("device_type", DEVICE_TYPE);
+    formData.append("device_token", DEVICE_TOKEN);
+
     const { data } = await apiClient.post<FlutterLoginResponse>(
       API_ENDPOINTS.AUTH.LOGIN,
-      {
-        type: LOGIN_TYPE.OTP,
-        mobile_number: mobileNumber,
-        country_code: countryCode,
-        country_name: countryName,
-        device_name: "web",
-        device_type: DEVICE_TYPE,
-        device_token: DEVICE_TOKEN,
-      }
+      formData
     );
     return data;
   },
@@ -82,15 +83,16 @@ export const authService = {
     email: string,
     password: string
   ): Promise<FlutterLoginResponse> => {
+    const formData = new FormData();
+    formData.append("type", LOGIN_TYPE.NORMAL);
+    formData.append("email", email);
+    formData.append("password", password);
+    formData.append("device_type", DEVICE_TYPE);
+    formData.append("device_token", DEVICE_TOKEN);
+
     const { data } = await apiClient.post<FlutterLoginResponse>(
       API_ENDPOINTS.AUTH.LOGIN,
-      {
-        type: LOGIN_TYPE.NORMAL,
-        email,
-        password,
-        device_type: DEVICE_TYPE,
-        device_token: DEVICE_TOKEN,
-      }
+      formData
     );
     return data;
   },
@@ -103,15 +105,16 @@ export const authService = {
     email: string,
     fullName: string
   ): Promise<FlutterLoginResponse> => {
+    const formData = new FormData();
+    formData.append("type", LOGIN_TYPE.GOOGLE);
+    formData.append("email", email);
+    formData.append("full_name", fullName);
+    formData.append("device_type", DEVICE_TYPE);
+    formData.append("device_token", DEVICE_TOKEN);
+
     const { data } = await apiClient.post<FlutterLoginResponse>(
       API_ENDPOINTS.AUTH.LOGIN,
-      {
-        type: LOGIN_TYPE.GOOGLE,
-        email,
-        full_name: fullName,
-        device_type: DEVICE_TYPE,
-        device_token: DEVICE_TOKEN,
-      }
+      formData
     );
     return data;
   },
@@ -128,15 +131,19 @@ export const authService = {
     country_code?: string;
     country_name?: string;
   }): Promise<FlutterLoginResponse> => {
+    const formData = new FormData();
+    formData.append("full_name", params.full_name);
+    formData.append("email", params.email);
+    formData.append("mobile_number", params.mobile_number);
+    formData.append("password", params.password);
+    formData.append("country_code", params.country_code ?? "+91");
+    formData.append("country_name", params.country_name ?? "India");
+    formData.append("device_type", DEVICE_TYPE);
+    formData.append("device_token", DEVICE_TOKEN);
+
     const { data } = await apiClient.post<FlutterLoginResponse>(
       API_ENDPOINTS.AUTH.REGISTER,
-      {
-        ...params,
-        country_code: params.country_code ?? "+91",
-        country_name: params.country_name ?? "India",
-        device_type: DEVICE_TYPE,
-        device_token: DEVICE_TOKEN,
-      }
+      formData
     );
     return data;
   },
@@ -146,9 +153,12 @@ export const authService = {
    * POST /forgot_password  { email }
    */
   forgotPassword: async (email: string): Promise<FlutterSuccessResponse> => {
+    const formData = new FormData();
+    formData.append("email", email);
+
     const { data } = await apiClient.post<FlutterSuccessResponse>(
       API_ENDPOINTS.AUTH.FORGOT_PASSWORD,
-      { email }
+      formData
     );
     return data;
   },
@@ -166,9 +176,10 @@ export const authService = {
    * POST /get_profile  { customer_id }
    */
   getProfile: async (customerId: string | number): Promise<ApiResponse> => {
-    const { data } = await apiClient.post(API_ENDPOINTS.AUTH.ME, {
-      customer_id: customerId,
-    });
+    const formData = new FormData();
+    formData.append("customer_id", String(customerId));
+
+    const { data } = await apiClient.post(API_ENDPOINTS.AUTH.ME, formData);
     return data;
   },
 

@@ -8,10 +8,11 @@ const getCustomerId = () => Cookies.get("customer_id") ?? 0;
 export const promoService = {
   /** POST /get_promocode */
   getPromoCodes: async (pageNo = 1): Promise<FlutterPagedResponse<PromoCode>> => {
-    const { data } = await apiClient.post(API_ENDPOINTS.PROMO.GET, {
-      customer_id: getCustomerId(),
-      page_no: pageNo,
-    });
+    const formData = new FormData();
+    formData.append("customer_id", getCustomerId().toString());
+    formData.append("page_no", pageNo.toString());
+
+    const { data } = await apiClient.post(API_ENDPOINTS.PROMO.GET, formData);
     return data;
   },
 
@@ -20,10 +21,11 @@ export const promoService = {
     promoCodeId: number | string,
     totalPrice: number
   ): Promise<FlutterResponse<{ discount_amount: number }>> => {
-    const { data } = await apiClient.post(API_ENDPOINTS.PROMO.APPLY, {
-      promo_code_id: promoCodeId,
-      total_price: totalPrice,
-    });
+    const formData = new FormData();
+    formData.append("promo_code_id", promoCodeId.toString());
+    formData.append("total_price", totalPrice.toString());
+
+    const { data } = await apiClient.post(API_ENDPOINTS.PROMO.APPLY, formData);
     return data;
   },
 };

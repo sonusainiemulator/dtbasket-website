@@ -15,59 +15,65 @@ export const productService = {
 
   /** GET /get_section — home sections with products */
   getSections: async (pageNo = 1, isHomeScreen = 1, typeId = 0): Promise<FlutterPagedResponse<SectionResult>> => {
-    const { data } = await apiClient.post(API_ENDPOINTS.HOME.GET_SECTION, {
-      is_home_screen: isHomeScreen,
-      type_id: typeId,
-      page_no: pageNo,
-      customer_id: getCustomerId(),
-    });
+    const formData = new FormData();
+    formData.append("is_home_screen", isHomeScreen.toString());
+    formData.append("type_id", typeId.toString());
+    formData.append("page_no", pageNo.toString());
+    formData.append("customer_id", getCustomerId().toString());
+
+    const { data } = await apiClient.post(API_ENDPOINTS.HOME.GET_SECTION, formData);
     return data;
   },
 
   /** GET /item_details */
   getItemDetails: async (itemId: number | string): Promise<FlutterResponse<ProductItem>> => {
-    const { data } = await apiClient.post(API_ENDPOINTS.PRODUCTS.ITEM_DETAILS, {
-      item_id: itemId,
-      customer_id: getCustomerId(),
-    });
+    const formData = new FormData();
+    formData.append("item_id", itemId.toString());
+    formData.append("customer_id", getCustomerId().toString());
+
+    const { data } = await apiClient.post(API_ENDPOINTS.PRODUCTS.ITEM_DETAILS, formData);
     return data;
   },
 
   /** GET /get_similar_items */
   getSimilarItems: async (itemId: number | string): Promise<FlutterResponse<ProductItem>> => {
-    const { data } = await apiClient.post(API_ENDPOINTS.PRODUCTS.SIMILAR_ITEMS, {
-      item_id: itemId,
-      customer_id: getCustomerId(),
-    });
+    const formData = new FormData();
+    formData.append("item_id", itemId.toString());
+    formData.append("customer_id", getCustomerId().toString());
+
+    const { data } = await apiClient.post(API_ENDPOINTS.PRODUCTS.SIMILAR_ITEMS, formData);
     return data;
   },
 
   /** GET /get_top_rating_items */
   getTopRatingItems: async (pageNo = 1): Promise<FlutterPagedResponse<ProductItem>> => {
-    const { data } = await apiClient.post(API_ENDPOINTS.PRODUCTS.TOP_RATING, {
-      page_no: pageNo,
-      customer_id: getCustomerId(),
-    });
+    const formData = new FormData();
+    formData.append("page_no", pageNo.toString());
+    formData.append("customer_id", getCustomerId().toString());
+
+    const { data } = await apiClient.post(API_ENDPOINTS.PRODUCTS.TOP_RATING, formData);
     return data;
   },
 
   /** GET /search_items */
   searchItems: async (query: string, pageNo = 1): Promise<FlutterPagedResponse<ProductItem>> => {
-    const { data } = await apiClient.post(API_ENDPOINTS.PRODUCTS.SEARCH, {
-      query,
-      page_no: pageNo,
-      customer_id: getCustomerId(),
-      page_limit: 50
-    });
+    const formData = new FormData();
+    formData.append("query", query);
+    formData.append("page_no", pageNo.toString());
+    formData.append("customer_id", getCustomerId().toString());
+    formData.append("page_limit", "50");
+
+    const { data } = await apiClient.post(API_ENDPOINTS.PRODUCTS.SEARCH, formData);
     return data;
   },
 
   /** POST /track_intrest */
   trackInterest: async (itemId: number | string): Promise<void> => {
-    await apiClient.post(API_ENDPOINTS.PRODUCTS.TRACK_INTEREST, {
-      item_id: itemId,
-      customer_id: getCustomerId(),
-    });
+    const formData = new FormData();
+    formData.append("item_id", itemId.toString());
+    formData.append("customer_id", getCustomerId().toString());
+
+    await apiClient.post(API_ENDPOINTS.PRODUCTS.TRACK_INTEREST, formData);
   },
 
   /** GET /get_items_by_category */
@@ -76,24 +82,26 @@ export const productService = {
     subCategoryId: number | string = 0,
     pageNo = 1
   ): Promise<FlutterPagedResponse<ProductItem>> => {
-    const { data } = await apiClient.post(API_ENDPOINTS.CATEGORIES.GET_ITEMS_BY_CAT, {
-      category_id: categoryId,
-      sub_category_id: subCategoryId,
-      page_no: pageNo,
-      customer_id: getCustomerId(),
-      page_limit: 50
-    });
+    const formData = new FormData();
+    formData.append("category_id", categoryId.toString());
+    formData.append("sub_category_id", subCategoryId.toString());
+    formData.append("page_no", pageNo.toString());
+    formData.append("customer_id", getCustomerId().toString());
+    formData.append("page_limit", "50");
+
+    const { data } = await apiClient.post(API_ENDPOINTS.CATEGORIES.GET_ITEMS_BY_CAT, formData);
     return data;
   },
 
   /** GET /get_section_details */
   getSectionDetails: async (sectionId: number | string, pageNo = 1): Promise<FlutterPagedResponse<ProductItem>> => {
-    const { data } = await apiClient.post(API_ENDPOINTS.HOME.GET_SECTION_DETAILS, {
-      section_id: sectionId,
-      page_no: pageNo,
-      page_limit: 50,
-      customer_id: getCustomerId(),
-    });
+    const formData = new FormData();
+    formData.append("section_id", sectionId.toString());
+    formData.append("page_no", pageNo.toString());
+    formData.append("page_limit", "50");
+    formData.append("customer_id", getCustomerId().toString());
+
+    const { data } = await apiClient.post(API_ENDPOINTS.HOME.GET_SECTION_DETAILS, formData);
     return data;
   },
 };

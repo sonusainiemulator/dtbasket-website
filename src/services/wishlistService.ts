@@ -8,20 +8,22 @@ const getCustomerId = () => Cookies.get("customer_id") ?? 0;
 export const wishlistService = {
   /** POST /get_wishlist */
   getWishlist: async (pageNo = 1): Promise<FlutterPagedResponse<ProductItem>> => {
-    const { data } = await apiClient.post(API_ENDPOINTS.WISHLIST.GET, {
-      customer_id: getCustomerId(),
-      page_no: pageNo,
-      page_limit: 50
-    });
+    const formData = new FormData();
+    formData.append("customer_id", getCustomerId().toString());
+    formData.append("page_no", pageNo.toString());
+    formData.append("page_limit", "50");
+
+    const { data } = await apiClient.post(API_ENDPOINTS.WISHLIST.GET, formData);
     return data;
   },
 
   /** POST /add_remove_wishlist — toggles */
   toggleWishlist: async (itemId: number | string): Promise<FlutterResponse<unknown>> => {
-    const { data } = await apiClient.post(API_ENDPOINTS.WISHLIST.TOGGLE, {
-      customer_id: getCustomerId(),
-      item_id: itemId,
-    });
+    const formData = new FormData();
+    formData.append("customer_id", getCustomerId().toString());
+    formData.append("item_id", itemId.toString());
+
+    const { data } = await apiClient.post(API_ENDPOINTS.WISHLIST.TOGGLE, formData);
     return data;
   },
 };

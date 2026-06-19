@@ -8,11 +8,12 @@ export const categoryService = {
     categoryId: number | string = 0,
     pageNo = 1
   ): Promise<FlutterPagedResponse<Category>> => {
-    const { data } = await apiClient.post(API_ENDPOINTS.CATEGORIES.GET_WITH_SUBCAT, {
-      category_id: categoryId,
-      page_no: pageNo,
-      page_limit: 50
-    });
+    const formData = new FormData();
+    formData.append("category_id", categoryId.toString());
+    formData.append("page_no", pageNo.toString());
+    formData.append("page_limit", "50");
+
+    const { data } = await apiClient.post(API_ENDPOINTS.CATEGORIES.GET_WITH_SUBCAT, formData);
     return data;
   },
 };

@@ -8,9 +8,10 @@ const getCustomerId = () => Cookies.get("customer_id") ?? 0;
 export const cartService = {
   /** POST /get_cart_items */
   getCartItems: async (): Promise<FlutterPagedResponse<CartItem>> => {
-    const { data } = await apiClient.post(API_ENDPOINTS.CART.GET, {
-      customer_id: getCustomerId(),
-    });
+    const formData = new FormData();
+    formData.append("customer_id", getCustomerId().toString());
+
+    const { data } = await apiClient.post(API_ENDPOINTS.CART.GET, formData);
     return data;
   },
 
@@ -21,13 +22,14 @@ export const cartService = {
     price: number,
     variation: string = ""
   ): Promise<FlutterResponse<unknown>> => {
-    const { data } = await apiClient.post(API_ENDPOINTS.CART.ADD, {
-      item_id: itemId,
-      customer_id: getCustomerId(),
-      quantity,
-      price,
-      variation,
-    });
+    const formData = new FormData();
+    formData.append("item_id", itemId.toString());
+    formData.append("customer_id", getCustomerId().toString());
+    formData.append("quantity", quantity.toString());
+    formData.append("price", price.toString());
+    formData.append("variation", variation);
+
+    const { data } = await apiClient.post(API_ENDPOINTS.CART.ADD, formData);
     return data;
   },
 
@@ -36,20 +38,22 @@ export const cartService = {
     itemId: number | string,
     quantity: number
   ): Promise<FlutterResponse<unknown>> => {
-    const { data } = await apiClient.post(API_ENDPOINTS.CART.UPDATE, {
-      item_id: itemId,
-      customer_id: getCustomerId(),
-      quantity: String(quantity),
-    });
+    const formData = new FormData();
+    formData.append("item_id", itemId.toString());
+    formData.append("customer_id", getCustomerId().toString());
+    formData.append("quantity", quantity.toString());
+
+    const { data } = await apiClient.post(API_ENDPOINTS.CART.UPDATE, formData);
     return data;
   },
 
   /** POST /remove_cart */
   removeFromCart: async (itemId: number | string): Promise<FlutterResponse<unknown>> => {
-    const { data } = await apiClient.post(API_ENDPOINTS.CART.REMOVE, {
-      item_id: itemId,
-      customer_id: getCustomerId(),
-    });
+    const formData = new FormData();
+    formData.append("item_id", itemId.toString());
+    formData.append("customer_id", getCustomerId().toString());
+
+    const { data } = await apiClient.post(API_ENDPOINTS.CART.REMOVE, formData);
     return data;
   },
 };

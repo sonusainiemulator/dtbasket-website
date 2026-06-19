@@ -30,10 +30,22 @@ export interface InvoiceResponse {
 export const orderService = {
   /** POST /buy_orders */
   buyOrders: async (params: BuyOrderParams): Promise<FlutterResponse<unknown>> => {
-    const { data } = await apiClient.post(API_ENDPOINTS.ORDERS.BUY, {
-      customer_id: getCustomerId(),
-      ...params,
-    });
+    const formData = new FormData();
+    formData.append("customer_id", getCustomerId().toString());
+    formData.append("item_details", params.item_details);
+    formData.append("customer_address_id", params.customer_address_id.toString());
+    formData.append("promo_code_id", params.promo_code_id.toString());
+    formData.append("item_total", params.item_total.toString());
+    formData.append("total_payable_amount", params.total_payable_amount.toString());
+    formData.append("handling_charges", params.handling_charges.toString());
+    formData.append("donation_amount", params.donation_amount.toString());
+    formData.append("discount_amount", params.discount_amount.toString());
+    formData.append("delivery_charges", params.delivery_charges.toString());
+    formData.append("delivery_instructor_id", params.delivery_instructor_id.toString());
+    formData.append("payment_method", params.payment_method.toString());
+    formData.append("payment_status", params.payment_status.toString());
+
+    const { data } = await apiClient.post(API_ENDPOINTS.ORDERS.BUY, formData);
     return data;
   },
 
@@ -42,11 +54,12 @@ export const orderService = {
     orderStatus: number | string = 0,
     pageNo = 1
   ): Promise<FlutterPagedResponse<Order>> => {
-    const { data } = await apiClient.post(API_ENDPOINTS.ORDERS.LIST, {
-      customer_id: getCustomerId(),
-      order_status: orderStatus === "" ? 0 : Number(orderStatus),
-      page_no: pageNo,
-    });
+    const formData = new FormData();
+    formData.append("customer_id", getCustomerId().toString());
+    formData.append("order_status", (orderStatus === "" ? 0 : Number(orderStatus)).toString());
+    formData.append("page_no", pageNo.toString());
+
+    const { data } = await apiClient.post(API_ENDPOINTS.ORDERS.LIST, formData);
     return data;
   },
 
@@ -58,20 +71,21 @@ export const orderService = {
 
   /** POST /download_invoice */
   downloadInvoice: async (groupOrderId: string): Promise<InvoiceResponse> => {
-    const { data } = await apiClient.post(API_ENDPOINTS.ORDERS.INVOICE, {
-      group_order_id: groupOrderId,
-    });
+    const formData = new FormData();
+    formData.append("group_order_id", groupOrderId);
 
+    const { data } = await apiClient.post(API_ENDPOINTS.ORDERS.INVOICE, formData);
     return data;
   },
 
   /** POST /search_orders */
   searchOrders: async (query: string, pageNo = 1): Promise<FlutterPagedResponse<Order>> => {
-    const { data } = await apiClient.post(API_ENDPOINTS.ORDERS.SEARCH, {
-      customer_id: getCustomerId(),
-      query,
-      page_no: pageNo,
-    });
+    const formData = new FormData();
+    formData.append("customer_id", getCustomerId().toString());
+    formData.append("query", query);
+    formData.append("page_no", pageNo.toString());
+
+    const { data } = await apiClient.post(API_ENDPOINTS.ORDERS.SEARCH, formData);
     return data;
   },
 };
