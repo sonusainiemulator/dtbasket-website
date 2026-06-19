@@ -3,7 +3,7 @@ import Cookies from "js-cookie";
 import { CONFIG } from "@/branding";
 
 const API_BASE_URL =
-  process.env.NEXT_PUBLIC_API_BASE_URL;
+  process.env.NEXT_PUBLIC_API_BASE_URL?.replace(/\/+$/, '');
 
 console.log("🚀 API_BASE_URL:", API_BASE_URL); // Debug log
 
